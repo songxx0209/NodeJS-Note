@@ -1,5 +1,3 @@
-
-
 var mysql      = require('mysql');
 var dbconn = mysql.createConnection({
   host     : '127.0.0.1',
