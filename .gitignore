@@ -1,4 +1,7 @@
 express-test/node_modules/
-.DS_Store
+express-test/package-lock.json
 
 screenFood/node_modules/
+screenFood/package-lock.json
+
+.DS_Store
