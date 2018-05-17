@@ -1,2 +1,4 @@
-express-test/node_modules
+express-test/node_modules/
 .DS_Store
+
+screenFood/node_modules/
