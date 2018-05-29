@@ -6,10 +6,33 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var person = require("./person");
+
 
 var app = express();
 
+function insert() {
+ 
+  var user = new person({
+    username : 'Tracy McGrady',                 //用户账号
+    userpwd: 'abcd',                            //密码
+    userage: 37,                                //年龄
+    logindate : new Date()                      //最近登录时间
+  });
+
+  user.save(function (err, res) {
+    if (err) {
+      console.log("Error:" + err);
+    }
+    else {
+      console.log("Res:" + res);
+    }
+  });
+}
+
+
 // view engine setup
+// 设置模版引擎
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -22,13 +45,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.get('/login', function(req, res) {
+  insert();
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.log('i action');
   next(createError(404));
 });
 
-// error handler
+// error handler 错误处理中间件
 app.use(function(err, req, res, next) {
+  console.log('you action');
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -37,5 +66,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
