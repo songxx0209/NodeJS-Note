@@ -12,14 +12,12 @@ var person = require("./person");
 var app = express();
 
 function insert() {
- 
   var user = new person({
-    username : 'Tracy McGrady',                 //用户账号
-    userpwd: 'abcd',                            //密码
-    userage: 37,                                //年龄
-    logindate : new Date()                      //最近登录时间
+    username : 'Tracy McGrady',
+    userpwd: 'abcd',
+    userage: 37,
+    logindate : new Date()
   });
-
   user.save(function (err, res) {
     if (err) {
       console.log("Error:" + err);
@@ -27,6 +25,12 @@ function insert() {
     else {
       console.log("Res:" + res);
     }
+  });
+}
+
+function fetch(res) {
+  person.find({userage: 37}, function(err, data) {
+    res.end(JSON.stringify(data));
   });
 }
 
@@ -41,12 +45,29 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//解决跨域：allow custom header and CORS
+app.all('*', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+    /*让options请求快速返回*/
+  }
+  else {
+    next();
+  }
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 app.get('/login', function(req, res) {
   insert();
+});
+app.get('/fetchUsers', function(req, res) {
+  fetch(res);
 });
 
 // catch 404 and forward to error handler

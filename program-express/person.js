@@ -1,11 +1,11 @@
 var mongoose = require('./db.js'),
     Schema = mongoose.Schema;
 
-var UserSchema = new Schema({          
-    username : { type: String },                    //用户账号
-    userpwd: {type: String},                        //密码
-    userage: {type: Number},                        //年龄
-    logindate : { type: Date}                       //最近登录时间
+var UserSchema = new Schema({
+    username : { type: String },
+    userpwd: {type: String},
+    userage: {type: Number},
+    logindate : { type: Date}
 });
 
-module.exports = mongoose.model('person',UserSchema);
+module.exports = mongoose.model('person',UserSchema, 'person');
